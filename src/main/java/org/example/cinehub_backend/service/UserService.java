@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.cinehub_backend.dto.UserLoginRequest;
 import org.example.cinehub_backend.dto.UserRegisterRequest;
 import org.example.cinehub_backend.entity.User;
+import org.example.cinehub_backend.exception.CineHubException;
+import org.example.cinehub_backend.exception.ErrorType;
 import org.example.cinehub_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.example.cinehub_backend.utility.JwtManager;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -16,15 +19,16 @@ import java.util.Optional;
 
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtManager jwtManager;
 
-    // Kullanıcı Giriş İşlemi
-    public boolean login(UserLoginRequest loginRequest) {
-        // Kullanıcı adıyla kullanıcıyı bul
-        User user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
 
-        // Şifre kontrolü
-        return user.getPassword().equals(loginRequest.getPassword());
+    public String login(UserLoginRequest dto) {
+
+        Optional<User> optionalUser = userRepository.findByUsernameAndPassword(dto.username(), dto.password());
+        if(optionalUser.isPresent()) {
+           return jwtManager.createUserToken(optionalUser.get().getId());
+        }
+        throw new CineHubException(ErrorType.ADMIN_NOT_FOUND);
     }
 
 

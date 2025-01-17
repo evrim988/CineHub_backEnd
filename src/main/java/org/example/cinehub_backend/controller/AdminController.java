@@ -18,14 +18,17 @@ import org.springframework.web.bind.annotation.*;
 
 public class AdminController {
     private final AdminService adminService;
+
+
     @PostMapping("/login")
-public ResponseEntity<String> login(@RequestBody AdminLoginRequest adminLoginRequest) {
-        boolean isAuthenticated = adminService.login(adminLoginRequest);
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Giriş Başarılı!");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Geçersiz kimlik bilgileri!");
-        }
+    public ResponseEntity<BaseResponse<String>> login(@RequestBody AdminLoginRequest adminLoginRequest) {
+        return ResponseEntity.ok(BaseResponse.<String>builder()
+                        .code(200)
+                        .success(true)
+                        .message("login işlemi başarılı")
+                        .data(adminService.login(adminLoginRequest))
+                .build());
+
     }
 }
 
