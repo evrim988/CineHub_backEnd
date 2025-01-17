@@ -23,4 +23,7 @@ public class User extends BaseEntity {
     String email;
     String username;
     String password;
+    String avatarUrl;
+    @Builder.Default
+    Boolean isEmailVerified=false;
 }

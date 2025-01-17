@@ -22,7 +22,8 @@ public class BaseEntity {
     LocalDate updateAt;
 
     @Enumerated(EnumType.STRING)
-    EState state;
+            @Builder.Default
+    EState state=EState.ACTIVE;
 
     @PrePersist
     protected void onCreate() {
