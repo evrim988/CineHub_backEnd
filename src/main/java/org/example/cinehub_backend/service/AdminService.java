@@ -17,8 +17,6 @@ public class AdminService {
         Admin admin=adminRepository.findByUsername(request.getUsername());
         throw new RuntimeException("Admin not found");
 
-        //Parola kontrolü
-
     }
 
 }
