@@ -28,17 +28,4 @@ public class UserController {
                .build());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterRequest registerRequest) {
-        userService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Kullanıcı Kaydı Başarıyla Gerçekleşti!");
-
-    }
-
-    @PostMapping("/username")
-    public ResponseEntity<?> getUserDetails(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserDetails(username));
-
-    }
-
 }

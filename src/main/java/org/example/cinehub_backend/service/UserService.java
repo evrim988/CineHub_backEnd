@@ -33,10 +33,11 @@ public class UserService {
 
 
     // Kullanıcı Kayıt İşlemi
-    public void register(UserRegisterRequest registerRequest) {
+    public void register(UserRegisterRequest dto) {
         // Kullanıcı adı veya e-posta zaten kayıtlı mı kontrol et
         if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
-            throw new RuntimeException("Bu kullanıcı adı zaten kullanılıyor.");
+            throw new CineHubException();
+
         }
 
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {

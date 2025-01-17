@@ -2,13 +2,13 @@ package org.example.cinehub_backend.dto;
 
 import lombok.Data;
 
-@Data
+public record UserRegisterRequest (
+        String username,
+        String firstName,
+        String lastName,
+        String password,
+        String email,
+        String avatarUrl
+) {
 
-public class UserRegisterRequest {
-    private String username;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String email;
-    private String avatarUrl;
 }
