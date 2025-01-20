@@ -43,11 +43,11 @@ public class JwtManager {
         return createToken(authId, "USER");
     }
 
-    public Optional<Long> validateToken(String token, String expectedKey) {
+    public Optional<Long> validateToken(String token, String userRole) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secretKey);
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withClaim("key", expectedKey)
+                    .withClaim("key", userRole)
                     .withIssuer(issuer)
                     .build();
             DecodedJWT jwt = verifier.verify(token);

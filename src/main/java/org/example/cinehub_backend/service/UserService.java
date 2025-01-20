@@ -1,14 +1,11 @@
 package org.example.cinehub_backend.service;
 
-import ch.qos.logback.core.net.SMTPAppenderBase;
 import lombok.RequiredArgsConstructor;
-import org.example.cinehub_backend.dto.UserLoginRequest;
-import org.example.cinehub_backend.dto.UserRegisterRequest;
+import org.example.cinehub_backend.dto.request.UserLoginRequestDto;
 import org.example.cinehub_backend.entity.User;
 import org.example.cinehub_backend.exception.CineHubException;
 import org.example.cinehub_backend.exception.ErrorType;
 import org.example.cinehub_backend.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.example.cinehub_backend.utility.JwtManager;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -22,8 +19,7 @@ public class UserService {
     private final JwtManager jwtManager;
 
 
-    public String login(UserLoginRequest dto) {
-
+    public String login(UserLoginRequestDto dto) {
         Optional<User> optionalUser = userRepository.findByUsernameAndPassword(dto.username(), dto.password());
         if(optionalUser.isPresent()) {
            return jwtManager.createUserToken(optionalUser.get().getId());
@@ -31,35 +27,17 @@ public class UserService {
         throw new CineHubException(ErrorType.ADMIN_NOT_FOUND);
     }
 
-
-    // Kullanıcı Kayıt İşlemi
-    public void register(UserRegisterRequest dto) {
-        // Kullanıcı adı veya e-posta zaten kayıtlı mı kontrol et
-        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
-            throw new CineHubException();
-
+    public User getUserProfile(String token) {
+        Optional<Long> optionalUserId = jwtManager.validateToken(token, "USER");
+        if (optionalUserId.isEmpty()){
+            throw new CineHubException(ErrorType.INVALID_TOKEN);
         }
-
-        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("Bu e-posta zaten kayıtlı.");
+        Optional<User> optionalUser = userRepository.findById(optionalUserId.get());
+        if (optionalUser.isEmpty()){
+            throw new CineHubException(ErrorType.USER_NOT_FOUND);
         }
-
-        User newUser = User.builder()
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
-                .email(registerRequest.getEmail())
-                .username(registerRequest.getUsername())
-                .password(registerRequest.getPassword()) // Şifreyi düz metin olarak kaydetmek güvenli değil
-                .avatarUrl(registerRequest.getAvatarUrl())
-                .isEmailVerified(false)
-                .build();
-        // Kullanıcıyı kaydet
-        userRepository.save(newUser);
+        return optionalUser.get();
     }
 
-    // Kullanıcı Detaylarını Getirme
-    public User getUserDetails(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
-    }
+
 }

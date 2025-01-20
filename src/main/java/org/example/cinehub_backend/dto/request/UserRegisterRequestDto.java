@@ -1,8 +1,6 @@
-package org.example.cinehub_backend.dto;
+package org.example.cinehub_backend.dto.request;
 
-import lombok.Data;
-
-public record UserRegisterRequest (
+public record UserRegisterRequestDto(
         String username,
         String firstName,
         String lastName,

@@ -1,31 +1,40 @@
 package org.example.cinehub_backend.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.example.cinehub_backend.dto.UserLoginRequest;
-import org.example.cinehub_backend.dto.UserRegisterRequest;
+import static org.example.cinehub_backend.constant.RestApis.*;
+import org.example.cinehub_backend.dto.request.UserLoginRequestDto;
 import org.example.cinehub_backend.dto.response.BaseResponse;
+import org.example.cinehub_backend.entity.User;
 import org.example.cinehub_backend.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/user")
+@RequestMapping(USER)
 
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<BaseResponse<String>> login(@RequestBody UserLoginRequest dto) {
+    @PostMapping(USERLOGIN)
+    public ResponseEntity<BaseResponse<String>> login(@RequestBody UserLoginRequestDto dto) {
        return ResponseEntity.ok(BaseResponse.<String>builder()
                        .code(200)
                        .success(true)
                        .message("Giriş işlemi başarılı")
                        .data(userService.login(dto))
                .build());
+    }
+
+    @GetMapping("/user-get-profile")
+    public ResponseEntity<BaseResponse<User>> getUserProfile(@RequestParam String token) {
+        return ResponseEntity.ok(BaseResponse.<User>builder()
+                        .code(200)
+                        .success(true)
+                        .message("Kullanıcı bilgisi başarıyla getirildi.")
+                        .data(userService.getUserProfile(token))
+                .build());
     }
 
 }
