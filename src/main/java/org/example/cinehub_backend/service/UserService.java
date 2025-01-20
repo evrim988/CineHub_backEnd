@@ -6,6 +6,7 @@ import org.example.cinehub_backend.dto.request.UserRegisterRequestDto;
 import org.example.cinehub_backend.entity.User;
 import org.example.cinehub_backend.exception.CineHubException;
 import org.example.cinehub_backend.exception.ErrorType;
+import org.example.cinehub_backend.mapper.UserMapper;
 import org.example.cinehub_backend.repository.UserRepository;
 import org.example.cinehub_backend.utility.JwtManager;
 import org.springframework.stereotype.Service;
@@ -60,12 +61,16 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void register(String email) {
-        User user = User.builder()
-                .email(email)
-                .build();
+    public void register(UserRegisterRequestDto dto) {
+        User user = UserMapper.INSTANCE.fromUserRegisterRequestDto(dto);
+        if(userRepository.existsByUsername(dto.username())){
+            throw new CineHubException(ErrorType.USERNAME_ALREADY_EXIST);
+        }
+        if (userRepository.existsByEmail(dto.email())){
+            throw new CineHubException(ErrorType.EMAIL_ALREADY_EXIST);
+        }
         userRepository.save(user);
-        emailService.sendEmail(email, jwtManager.createUserToken(user.getId()));
+        emailService.sendEmail(dto.email(), jwtManager.createUserToken(user.getId()));
     }
 
 }

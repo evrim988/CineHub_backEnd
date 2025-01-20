@@ -5,8 +5,7 @@ public record UserRegisterRequestDto(
         String firstName,
         String lastName,
         String password,
-        String email,
-        String avatarUrl
+        String email
 ) {
 
 }

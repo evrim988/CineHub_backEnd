@@ -3,6 +3,7 @@ package org.example.cinehub_backend.controller;
 import lombok.RequiredArgsConstructor;
 import static org.example.cinehub_backend.constant.RestApis.*;
 import org.example.cinehub_backend.dto.request.UserLoginRequestDto;
+import org.example.cinehub_backend.dto.request.UserRegisterRequestDto;
 import org.example.cinehub_backend.dto.response.BaseResponse;
 import org.example.cinehub_backend.entity.User;
 import org.example.cinehub_backend.service.UserService;
@@ -49,12 +50,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse<Boolean>> register(String email){
-        userService.register(email);
+    public ResponseEntity<BaseResponse<Boolean>> register(@RequestBody UserRegisterRequestDto dto) {
+        userService.register(dto);
         return ResponseEntity.ok(BaseResponse.<Boolean>builder()
                 .code(200)
                 .success(true)
-                .message("Kayıt işlemi başarılı. Mail kutunuzu kontrol ediniz.")
+                .message("Kayıt işlemi başarılı. Mail adresinize gelen link üzerinden hesabınızı onaylayabilirsiniz.")
                 .data(true)
                 .build());
     }
