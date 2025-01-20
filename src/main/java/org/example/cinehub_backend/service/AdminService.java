@@ -23,8 +23,7 @@ public class AdminService {
         if (optionalAdmin.isPresent()) {
             return jwtManager.createAdminToken(optionalAdmin.get().getId());
         }
-        throw new CineHubException(ErrorType.ADMIN_NOT_FOUND);
-
+        throw new CineHubException(ErrorType.INVALID_USERNAME_OR_PASSWORD);
     }
 
     public Admin getAdminProfile(String token) {

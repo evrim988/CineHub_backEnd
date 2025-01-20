@@ -37,4 +37,26 @@ public class UserController {
                 .build());
     }
 
+    @GetMapping("/verify-account")
+    public ResponseEntity<BaseResponse<Boolean>> verifyAccount(@RequestParam String token) {
+        userService.verifyAccount(token);
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+                        .code(200)
+                        .success(true)
+                        .message("Hesabınız başarılı şekilde onaylandı.")
+                        .data(true)
+                .build());
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<BaseResponse<Boolean>> register(String email){
+        userService.register(email);
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+                .code(200)
+                .success(true)
+                .message("Kayıt işlemi başarılı. Mail kutunuzu kontrol ediniz.")
+                .data(true)
+                .build());
+    }
+
 }
