@@ -18,3 +18,6 @@ spring:
     password: ''
     protocol: smtp
 
+    file:
+     upload-dir: "/path/to/your/upload/directory"
+
