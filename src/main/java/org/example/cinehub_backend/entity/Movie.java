@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -24,9 +25,8 @@ public class Movie extends BaseEntity {
     private String genre;
 
     private String posterUrl;
-
     private String imagePath;
-
     private String director;
 }
+
 
