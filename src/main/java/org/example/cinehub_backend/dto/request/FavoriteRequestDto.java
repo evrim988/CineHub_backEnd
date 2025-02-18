@@ -5,4 +5,11 @@ public record FavoriteRequestDto(
         Long movieId
 ) {
 
+    public Long getUserId() {
+        return 0L;
+    }
+
+    public Long getMovieId() {
+        return 0L;
+    }
 }

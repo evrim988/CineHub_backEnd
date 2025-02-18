@@ -22,14 +22,16 @@ public class BaseEntity {
     LocalDate updateAt;
 
     @Enumerated(EnumType.STRING)
-            @Builder.Default
-    EState state=EState.ACTIVE;
+    @Builder.Default
+    EState state = EState.ACTIVE;
+
 
     @PrePersist
     protected void onCreate() {
         this.createAt = LocalDate.now();
         this.updateAt = LocalDate.now();
     }
+
 
     @PreUpdate
     protected void onUpdate() {
